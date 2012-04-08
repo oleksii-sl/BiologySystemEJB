@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<datasources>
+  <local-tx-datasource>
+    <jndi-name>BiologySystemDS</jndi-name>
+    <connection-url>jdbc:oracle:thin:@localhost:1521:xe</connection-url>
+    <driver-class>oracle.jdbc.OracleDriver</driver-class>
+    <user-name>alex</user-name>
+    <password>oracle</password>
+    <exception-sorter-class-name>org.jboss.resource.adapter.jdbc.vendor.OracleExceptionSorter</exception-sorter-class-name>
+  </local-tx-datasource>
+</datasources>
