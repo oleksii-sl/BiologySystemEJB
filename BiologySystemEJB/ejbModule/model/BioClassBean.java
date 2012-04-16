@@ -61,6 +61,7 @@ public class BioClassBean extends CommonBean implements EntityBean
 
     private EntityContext context;
     private DataSource ds;
+    private boolean changed = false;
 
     private String name;
     private Integer parentId;
@@ -96,8 +97,8 @@ public class BioClassBean extends CommonBean implements EntityBean
                     throw new CreateException(EXCEPTION_NO_REFERENCED_CLASS);
                 pst.setInt(2, parent);
             }
-            pst.executeUpdate();
-            //log.info("Add Alive: " + pst.executeUpdate());
+            //pst.executeUpdate();
+            log.info("Add Alive: " + pst.executeUpdate());
         } catch (SQLException e) {
             throw new CreateException(e.getMessage());
         } finally {
@@ -272,6 +273,7 @@ public class BioClassBean extends CommonBean implements EntityBean
 
     public void setName(String name) {
         this.name = name;
+        changed = true;
     }
 
     public Integer getParentId() {
@@ -280,6 +282,7 @@ public class BioClassBean extends CommonBean implements EntityBean
 
     public void setParentId(Integer parentId) {
         this.parentId = parentId;
+        changed = true;
     }
 
     @Override
@@ -327,6 +330,8 @@ public class BioClassBean extends CommonBean implements EntityBean
     @Override
     public void ejbStore() throws EJBException, RemoteException
     {
+        if (!changed)
+            return;
         Connection conn = null;
         PreparedStatement pst = null;
         try {
@@ -338,8 +343,8 @@ public class BioClassBean extends CommonBean implements EntityBean
             else
                 pst.setInt(2, this.parentId);
             pst.setInt(3, this.id);
-            pst.executeUpdate();
-            //log.info("Update Alive: " + pst.executeUpdate());
+            //pst.executeUpdate();
+            log.info("Update Alive: " + pst.executeUpdate());
         } catch (SQLException e) {
             throw new EJBException(e.getMessage());
         } finally {

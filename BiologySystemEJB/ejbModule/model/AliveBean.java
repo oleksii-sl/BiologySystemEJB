@@ -44,6 +44,7 @@ public class AliveBean extends CommonBean implements EntityBean
 
     private EntityContext context;
     private DataSource ds;
+    private boolean changed;
 
     private String name;
     private String nameLatin;
@@ -53,6 +54,8 @@ public class AliveBean extends CommonBean implements EntityBean
     private long population;
     private int bioClass;
     private int id;
+
+
 
 
     public AliveBean()
@@ -79,8 +82,8 @@ public class AliveBean extends CommonBean implements EntityBean
             pst.setString(5, nativeRange);
             pst.setLong(6, population);
             pst.setInt(7, bioClass);
-            pst.executeUpdate();
-            //log.info("Add Alive: " + pst.executeUpdate());
+            //pst.executeUpdate();
+            log.info("Add Alive: " + pst.executeUpdate());
         } catch (SQLException e) {
             throw new CreateException(e.getMessage());
         } finally {
@@ -180,6 +183,7 @@ public class AliveBean extends CommonBean implements EntityBean
 
     public void setBioClass(int bioClass) {
         this.bioClass = bioClass;
+        changed = true;
     }
 
     public String getName() {
@@ -188,6 +192,7 @@ public class AliveBean extends CommonBean implements EntityBean
 
     public void setName(String name) {
         this.name = name;
+        changed = true;
     }
 
     public String getNameLatin() {
@@ -196,6 +201,7 @@ public class AliveBean extends CommonBean implements EntityBean
 
     public void setNameLatin(String nameLatin) {
         this.nameLatin = nameLatin;
+        changed = true;
     }
 
     public String getNativeRange() {
@@ -204,6 +210,7 @@ public class AliveBean extends CommonBean implements EntityBean
 
     public void setNativeRange(String nativeRange) {
         this.nativeRange = nativeRange;
+        changed = true;
     }
 
     public int getLifespan() {
@@ -212,6 +219,7 @@ public class AliveBean extends CommonBean implements EntityBean
 
     public void setLifespan(int lifespan) {
         this.lifespan = lifespan;
+        changed = true;
     }
 
     public double getAvgWeight() {
@@ -220,6 +228,7 @@ public class AliveBean extends CommonBean implements EntityBean
 
     public void setAvgWeight(double avgWeight) {
         this.avgWeight = avgWeight;
+        changed = true;
     }
 
     public long getPopulation() {
@@ -228,6 +237,7 @@ public class AliveBean extends CommonBean implements EntityBean
 
     public void setPopulation(long population) {
         this.population = population;
+        changed = true;
     }
 
     @Override
@@ -290,6 +300,8 @@ public class AliveBean extends CommonBean implements EntityBean
     @Override
     public void ejbStore() throws EJBException, RemoteException
     {
+        if (!changed)
+            return;
         Connection conn = null;
         PreparedStatement pst = null;
         try {
@@ -303,8 +315,8 @@ public class AliveBean extends CommonBean implements EntityBean
             pst.setLong(6, this.population);
             pst.setInt(7, this.bioClass);
             pst.setInt(8, this.id);
-            pst.executeUpdate();
-            //log.info("Update Alive: " + pst.executeUpdate());
+            //pst.executeUpdate();
+            log.info("Update Alive: " + pst.executeUpdate());
         } catch (SQLException e) {
             throw new EJBException(e.getMessage());
         } finally {
