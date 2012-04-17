@@ -44,7 +44,6 @@ public class AliveBean extends CommonBean implements EntityBean
 
     private EntityContext context;
     private DataSource ds;
-    private boolean changed;
 
     private String name;
     private String nameLatin;
@@ -84,6 +83,7 @@ public class AliveBean extends CommonBean implements EntityBean
             pst.setInt(7, bioClass);
             //pst.executeUpdate();
             log.info("Add Alive: " + pst.executeUpdate());
+            setStateChanged(false);
         } catch (SQLException e) {
             throw new CreateException(e.getMessage());
         } finally {
@@ -183,7 +183,7 @@ public class AliveBean extends CommonBean implements EntityBean
 
     public void setBioClass(int bioClass) {
         this.bioClass = bioClass;
-        changed = true;
+        setStateChanged(true);
     }
 
     public String getName() {
@@ -192,7 +192,7 @@ public class AliveBean extends CommonBean implements EntityBean
 
     public void setName(String name) {
         this.name = name;
-        changed = true;
+        setStateChanged(true);
     }
 
     public String getNameLatin() {
@@ -201,7 +201,7 @@ public class AliveBean extends CommonBean implements EntityBean
 
     public void setNameLatin(String nameLatin) {
         this.nameLatin = nameLatin;
-        changed = true;
+        setStateChanged(true);
     }
 
     public String getNativeRange() {
@@ -210,7 +210,7 @@ public class AliveBean extends CommonBean implements EntityBean
 
     public void setNativeRange(String nativeRange) {
         this.nativeRange = nativeRange;
-        changed = true;
+        setStateChanged(true);
     }
 
     public int getLifespan() {
@@ -219,7 +219,7 @@ public class AliveBean extends CommonBean implements EntityBean
 
     public void setLifespan(int lifespan) {
         this.lifespan = lifespan;
-        changed = true;
+        setStateChanged(true);
     }
 
     public double getAvgWeight() {
@@ -228,7 +228,7 @@ public class AliveBean extends CommonBean implements EntityBean
 
     public void setAvgWeight(double avgWeight) {
         this.avgWeight = avgWeight;
-        changed = true;
+        setStateChanged(true);
     }
 
     public long getPopulation() {
@@ -237,7 +237,7 @@ public class AliveBean extends CommonBean implements EntityBean
 
     public void setPopulation(long population) {
         this.population = population;
-        changed = true;
+        setStateChanged(true);
     }
 
     @Override
@@ -300,7 +300,7 @@ public class AliveBean extends CommonBean implements EntityBean
     @Override
     public void ejbStore() throws EJBException, RemoteException
     {
-        if (!changed)
+        if (!isStateChanged())
             return;
         Connection conn = null;
         PreparedStatement pst = null;
@@ -317,6 +317,7 @@ public class AliveBean extends CommonBean implements EntityBean
             pst.setInt(8, this.id);
             //pst.executeUpdate();
             log.info("Update Alive: " + pst.executeUpdate());
+            setStateChanged(false);
         } catch (SQLException e) {
             throw new EJBException(e.getMessage());
         } finally {

@@ -20,6 +20,8 @@ public abstract class CommonBean
 
     private static final String REG_EXP_BETWEEN = "between: (\\w|-|_)+ \\d+(.\\d+)? \\d+(.\\d+)?";
 
+    private boolean changed;
+
     /**
      * Used to make constraint part of SQL query
      * @param ordercol column to order by
@@ -102,5 +104,13 @@ public abstract class CommonBean
             }
         }
 
+    }
+
+    protected boolean isStateChanged() {
+        return changed;
+    }
+
+    protected void setStateChanged(boolean changed) {
+        this.changed = changed;
     }
 }

@@ -61,7 +61,6 @@ public class BioClassBean extends CommonBean implements EntityBean
 
     private EntityContext context;
     private DataSource ds;
-    private boolean changed = false;
 
     private String name;
     private Integer parentId;
@@ -99,6 +98,7 @@ public class BioClassBean extends CommonBean implements EntityBean
             }
             //pst.executeUpdate();
             log.info("Add Alive: " + pst.executeUpdate());
+            setStateChanged(false);
         } catch (SQLException e) {
             throw new CreateException(e.getMessage());
         } finally {
@@ -112,7 +112,7 @@ public class BioClassBean extends CommonBean implements EntityBean
         return null;
     }
 
-    public void ejbPostCreate(String name, Integer parent) throws CreateException{ }
+    public void ejbPostCreate(String name, Integer parent) throws CreateException { }
 
     public Integer ejbFindByPrimaryKey(Integer id) throws FinderException
     {
@@ -273,7 +273,7 @@ public class BioClassBean extends CommonBean implements EntityBean
 
     public void setName(String name) {
         this.name = name;
-        changed = true;
+        setStateChanged(true);
     }
 
     public Integer getParentId() {
@@ -282,7 +282,7 @@ public class BioClassBean extends CommonBean implements EntityBean
 
     public void setParentId(Integer parentId) {
         this.parentId = parentId;
-        changed = true;
+        setStateChanged(true);
     }
 
     @Override
@@ -330,7 +330,7 @@ public class BioClassBean extends CommonBean implements EntityBean
     @Override
     public void ejbStore() throws EJBException, RemoteException
     {
-        if (!changed)
+        if (!isStateChanged())
             return;
         Connection conn = null;
         PreparedStatement pst = null;
@@ -345,6 +345,7 @@ public class BioClassBean extends CommonBean implements EntityBean
             pst.setInt(3, this.id);
             //pst.executeUpdate();
             log.info("Update Alive: " + pst.executeUpdate());
+            setStateChanged(false);
         } catch (SQLException e) {
             throw new EJBException(e.getMessage());
         } finally {
