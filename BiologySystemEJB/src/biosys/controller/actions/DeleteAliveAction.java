@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Map;
 
+import javax.ejb.RemoveException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -26,7 +27,11 @@ public class DeleteAliveAction implements Action {
 
         AliveHome bioSystem = (AliveHome)request.getAttribute(Application.EJB_ALIVE_MODEL);
         Map<String, String[]> map = request.getParameterMap();
-        bioSystem.delete(Integer.parseInt(map.get("id")[0]));
+        try {
+            bioSystem.remove(Integer.parseInt(map.get("id")[0]));
+        } catch (RemoveException e) {
+            throw new RuntimeException(e);
+        }
         response.sendRedirect("main");
     }
 

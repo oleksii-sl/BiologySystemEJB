@@ -277,26 +277,6 @@ public class AliveBean extends CommonBean implements EntityBean
         }
     }
 
-    public void ejbHomeDelete(Integer id) throws EJBException
-    {
-        Connection conn = null;
-        PreparedStatement pst = null;
-        try {
-            conn = ds.getConnection();
-            pst = conn.prepareStatement(SQL_DELETE_ALIVE);
-            pst.setInt(1, id);
-            pst.executeUpdate();
-        } catch (SQLException e) {
-            throw new EJBException(e.getMessage());
-        } finally {
-            try {
-                closeAll(conn, pst, null);
-            } catch (SQLException e) {
-                throw new EJBException(e.getMessage());
-            }
-        }
-    }
-
     @Override
     public void ejbStore() throws EJBException, RemoteException
     {
@@ -348,9 +328,25 @@ public class AliveBean extends CommonBean implements EntityBean
     public void ejbPassivate() throws EJBException, RemoteException { }
 
     @Override
-    public void ejbRemove() throws RemoveException, EJBException,
-            RemoteException
-    { }
+    public void ejbRemove() throws RemoveException, EJBException, RemoteException
+    {
+        Connection conn = null;
+        PreparedStatement pst = null;
+        try {
+            conn = ds.getConnection();
+            pst = conn.prepareStatement(SQL_DELETE_ALIVE);
+            pst.setInt(1, this.id);
+            pst.executeUpdate();
+        } catch (SQLException e) {
+            throw new RemoveException(e.getMessage());
+        } finally {
+            try {
+                closeAll(conn, pst, null);
+            } catch (SQLException e) {
+                throw new EJBException(e.getMessage());
+            }
+        }
+    }
 
     /**
      * Used to handle <tt>Alive</tt> result set

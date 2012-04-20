@@ -235,34 +235,6 @@ public class BioClassBean extends CommonBean implements EntityBean
         return list;
     }
 
-    public void ejbHomeDelete(Integer id) throws EJBException
-    {
-        Connection conn = null;
-        PreparedStatement pst = null;
-        PreparedStatement checkSt = null;
-        ResultSet checkRs = null;
-
-        try {
-            conn = ds.getConnection();
-            checkSt = conn.prepareStatement(SQL_CHECK_CLASS_CHILDREN);
-            checkSt.setInt(1, id);
-            checkRs = checkSt.executeQuery();
-            if (checkRs.next())
-                throw new EJBException(EXCEPTION_PARENT_CLASS_DELETE);
-            pst = conn.prepareStatement(SQL_DELETE_CLASS);
-            pst.setInt(1, id);
-            pst.executeUpdate();
-        } catch (SQLException e) {
-            throw new EJBException(e.getMessage());
-        } finally {
-            try {
-                closeAll(conn, pst, null);
-            } catch (SQLException e) {
-                throw new EJBException(e.getMessage());
-            }
-        }
-    }
-
     public int getId() {
         return id;
     }
@@ -324,8 +296,33 @@ public class BioClassBean extends CommonBean implements EntityBean
     public void ejbPassivate() throws EJBException, RemoteException { }
 
     @Override
-    public void ejbRemove() throws RemoveException, EJBException,
-            RemoteException { }
+    public void ejbRemove() throws RemoveException, EJBException, RemoteException
+    {
+        Connection conn = null;
+        PreparedStatement pst = null;
+        PreparedStatement checkSt = null;
+        ResultSet checkRs = null;
+
+        try {
+            conn = ds.getConnection();
+            checkSt = conn.prepareStatement(SQL_CHECK_CLASS_CHILDREN);
+            checkSt.setInt(1, this.id);
+            checkRs = checkSt.executeQuery();
+            if (checkRs.next())
+                throw new RemoveException(EXCEPTION_PARENT_CLASS_DELETE);
+            pst = conn.prepareStatement(SQL_DELETE_CLASS);
+            pst.setInt(1, this.id);
+            pst.executeUpdate();
+        } catch (SQLException e) {
+            throw new RemoveException(e.getMessage());
+        } finally {
+            try {
+                closeAll(conn, pst, null);
+            } catch (SQLException e) {
+                throw new EJBException(e.getMessage());
+            }
+        }
+    }
 
     @Override
     public void ejbStore() throws EJBException, RemoteException

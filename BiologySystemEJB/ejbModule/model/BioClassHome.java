@@ -34,7 +34,7 @@ public interface BioClassHome extends EJBHome
     /**
      * Used to get <tt>BioClass</tt> with specified id
      * @param id
-     * @return BioClass objec
+     * @return BioClass object
      * @throws FinderException
      * @throws RemoteException
      */
@@ -64,12 +64,5 @@ public interface BioClassHome extends EJBHome
      * @throws RemoteException
      */
     public Collection<BioClass> findHierarchy(Integer parent) throws FinderException, RemoteException;
-
-    /**
-     * Used to remove <tt>BioClass</tt> from model by specified id
-     * @param id
-     * @throws RemoteException
-     */
-    public void delete(Integer id) throws RemoteException;
 
 }

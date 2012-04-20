@@ -19,14 +19,6 @@ public interface AliveHome extends EJBHome
     public Alive create(String name, String nameLatin, int lifespan,
             double awgWeight, String nativeRange, long population, int bioClass)
             throws CreateException, RemoteException;
-
-    /**
-     * Used to remove <tt>Alive</tt> from model by specified id
-     * @param id
-     * @throws RemoteException
-     */
-    public void delete(Integer id) throws RemoteException;
-
     /**
      * Method used to get all Alive objects with specified constraint
      * @param ordercol  column to order
