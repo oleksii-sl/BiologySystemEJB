@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import biosys.controller.Application;
 import biosys.model.BiosystemDAO;
 
-public class GetAliveAction implements Action {
+public class GetClassAction implements Action {
 
     @Override
     public void perform(HttpServletRequest request, HttpServletResponse response)
@@ -18,7 +18,7 @@ public class GetAliveAction implements Action {
     {
         BiosystemDAO bioSystem = (BiosystemDAO)request.getAttribute(Application.MODEL);
         String target = request.getParameter("target");
-        request.setAttribute("alive", bioSystem.getAlive(
+        request.setAttribute("bioClass", bioSystem.getBioClass(
                 Integer.parseInt(request.getParameter("id"))));
         if (target == null) {
             throw new RuntimeException("Target is null");

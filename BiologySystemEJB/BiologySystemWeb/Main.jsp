@@ -13,7 +13,7 @@
     <div id="menu">
         <ul>
             <li class="current_page_item"><a href="#">Main Page</a></li>
-            <li><a href="handleUpdate?action=getAliveAction">Alive Page</a></li>
+            <li><a href="handleUpdate?action=getAlivesAction">Alive Page</a></li>
             <li><a href="handleUpdate?action=getClassesAction">Classes Page</a></li>
             <li><a href="addalive">Add Alive Page</a></li>
             <li><a href="addclass">Add Class Page</a></li>

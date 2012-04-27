@@ -14,7 +14,7 @@
     <div id="menu">
         <ul>
             <li><a href="main">Main Page</a></li>
-            <li><a href="handleUpdate?action=getAliveAction">Alive Page</a></li>
+            <li><a href="handleUpdate?action=getAlivesAction">Alive Page</a></li>
             <li class="current_page_item"><a href="#">Classes Page</a></li>
             <li><a href="addalive">Add Alive Page</a></li>
             <li><a href="addclass">Add Class Page</a></li>
@@ -69,10 +69,16 @@
             <c:forEach items='${classList}' var='element'>
                 <tr>
                     <td>${element.id}</td>
-                    <td><a href='xmlclass?id=${element.id }'>${element.name }</a></td>
+                    <td>
+                        <a href='handleUpdate?id=${element.id }&target=xmlclass&action=getClassAction'>
+                            ${element.name }
+                        </a>
+                    </td>
                     <td>${element.parentId}</td>
                     <td>
-                    <form action='editclass' method='post'> 
+                    <form action='handleUpdate' method='post'> 
+                        <input type="hidden" name="action" value="getClassAction" />
+                        <input type="hidden" name="target" value="editclass" />
                         <input type='hidden' name='id' value='${element.id }' />
                         <button class='green-button' >Edit!</button>
                     </form>

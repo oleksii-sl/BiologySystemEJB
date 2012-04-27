@@ -47,7 +47,7 @@
         </tr>
         </thead>
         <form action="handleUpdate" method="post" >
-        <input type="hidden" name="action" value="getAliveAction" />
+        <input type="hidden" name="action" value="getAlivesAction" />
         <tr>
             
             <td></td>
@@ -110,7 +110,11 @@
         <c:forEach items='${aliveList}' var="element">
             <tr>
                 <td>${element.id}</td>
-                <td><a href='xmlalive?id=${element.id }'>${element.name }</a></td>
+                <td>
+                    <a href='handleUpdate?id=${element.id }&target=xmlalive&action=getAliveAction'>
+                        ${element.name }
+                    </a>
+                </td>
                 <td>${element.nameLatin}</td>
                 <td>${element.lifespan }</td>
                 <td>${element.avgWeight }</td>
@@ -118,7 +122,9 @@
                 <td>${element.population }</td>
                 <td>${element.bioClass }</td>
                 <td>
-                <form action='editalive' method='post'> 
+                <form action='handleUpdate' method='post'> 
+                    <input type="hidden" name="action" value="getAliveAction" />
+                    <input type="hidden" name="target" value="editalive" />
                     <input type="hidden" name="id" value='${element.id }' />
                     <button class='green-button'>Edit!</button>
                 </form>

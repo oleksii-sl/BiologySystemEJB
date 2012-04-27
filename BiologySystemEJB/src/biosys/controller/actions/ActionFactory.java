@@ -52,6 +52,8 @@ public class ActionFactory {
         map.put("deleteAliveAction", DeleteAliveAction.class);
         map.put("deleteClassAction", DeleteClassAction.class);
         map.put("getAliveAction", GetAliveAction.class);
+        map.put("getClassAction", GetClassAction.class);
+        map.put("getAlivesAction", GetAlivesAction.class);
         map.put("getClassesAction", GetClassesAction.class);
         map.put("getClassesHierarchyAction", GetClassesHierarchyAction.class);
    }

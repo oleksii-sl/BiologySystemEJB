@@ -2,8 +2,6 @@
 <?xml-stylesheet type="text/xsl" href="aliveStyle.xsl"?>
 <%-- Set the content type --%>
 <%@ page contentType="text/xml" %>
-<jsp:useBean id="model" type="biosys.model.BiosystemDAO" scope="request" />
-<%  pageContext.setAttribute("alive", model.getAlive(Integer.parseInt(request.getParameter("id")))); %>
 <%-- Generate the XML --%> 
 <Alive xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="AliveXMLSchema.xsd">
     <id>${alive.id }</id>

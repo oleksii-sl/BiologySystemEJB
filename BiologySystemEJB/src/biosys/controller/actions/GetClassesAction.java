@@ -59,6 +59,7 @@ public class GetClassesAction implements Action {
         } else {
             classList = bioSystem.getAllClassesConstraint(ordercol, constraints);
         }
+
         request.setAttribute("classList", classList);
         RequestDispatcher dispatcher = request.getRequestDispatcher("classes");
         dispatcher.forward(request, response);
