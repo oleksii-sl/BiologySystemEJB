@@ -1,13 +1,13 @@
 package biosys.controller.actions;
 
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import biosys.controller.Application;
+import biosys.model.BiologySystemException;
 import biosys.model.BiosystemDAO;
 import biosys.model.Alive;
 /**
@@ -21,7 +21,7 @@ public class AddAliveAction implements Action {
      */
     @Override
     public void perform(HttpServletRequest request, HttpServletResponse response)
-            throws SQLException, IOException
+            throws BiologySystemException, IOException
     {
 
         BiosystemDAO bioSystem = (BiosystemDAO)request.getAttribute(Application.MODEL);

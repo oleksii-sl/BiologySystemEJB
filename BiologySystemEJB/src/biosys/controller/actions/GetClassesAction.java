@@ -1,7 +1,6 @@
 package biosys.controller.actions;
 
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -13,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import biosys.controller.Application;
 import biosys.model.BioClass;
+import biosys.model.BiologySystemException;
 import biosys.model.BiosystemDAO;
 
 /**
@@ -26,7 +26,7 @@ public class GetClassesAction implements Action {
      */
     @Override
     public void perform(HttpServletRequest request, HttpServletResponse response)
-            throws SQLException, IOException, ServletException {
+            throws BiologySystemException, IOException, ServletException {
 
 
         BiosystemDAO bioSystem = (BiosystemDAO)request.getAttribute(Application.MODEL);

@@ -1,5 +1,5 @@
 <?xml version="1.0" ?> 
-<project name="BiologySys" default="ear">
+<project name="BiologySys" default="javadoc">
     
     <property name="web.projectName" value="BiologySystemWeb"/>
     <property name="ejb.projectName" value="BiologySystemEjb"/>
@@ -73,12 +73,7 @@
         </ear>
     </target>
     
-    <target name="finish" depends="war, jar" >
-        
-    </target>
-    
-    <!--
-    <target name="javadoc" depends="compile, war">
+    <target name="javadoc" depends="ear">
         <echo>Building javaDoc</echo>
         <javadoc
             access="private"
@@ -93,7 +88,6 @@
             </fileset>
         </javadoc>
     </target>
-    -->
     
 	<target name="clean">
         <delete dir="${build.dir}" />

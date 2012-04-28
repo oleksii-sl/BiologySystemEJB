@@ -1,7 +1,6 @@
 package biosys.controller;
 
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.Map;
 
 import javax.servlet.ServletException;
@@ -12,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
 
 import biosys.controller.actions.ActionFactory;
+import biosys.model.BiologySystemException;
 
 /**
  * Servlet implementation class UpdateHandler
@@ -41,7 +41,7 @@ public class UpdateHandler extends HttpServlet {
                 log.info("Action to perform: " + map.get("action")[0]);
 
             factory.create(map.get("action")[0]).perform(request, response);
-        } catch (SQLException e) {
+        } catch (BiologySystemException e) {
             log.error(e);
             throw new RuntimeException(e);
         }

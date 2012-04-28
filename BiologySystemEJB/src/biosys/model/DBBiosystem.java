@@ -73,15 +73,18 @@ public class DBBiosystem implements BiosystemDAO {
      * @see biosys.model.BiosystemDAO#getAllAlive()
      */
     @Override
-    public List<Alive> getAllAlive() throws SQLException {
-        Connection conn = ds.getConnection();
+    public List<Alive> getAllAlive() throws BiologySystemException {
+        Connection conn = null;
         Statement st = null;
         List<Alive> list = null;
         ResultSet rs = null;
         try {
+            conn = ds.getConnection();
             st = conn.createStatement();
             rs = st.executeQuery(SQL_GET_ALL_ALIVE);
             list = handleAliveResultSet(rs);
+        } catch (SQLException e) {
+            throw new BiologySystemException(e);
         } finally {
             closeAll(conn, st, rs);
         }
@@ -92,16 +95,19 @@ public class DBBiosystem implements BiosystemDAO {
      * @see biosys.model.BiosystemDAO#getAlive(int)
      */
     @Override
-    public Alive getAlive(int id) throws SQLException {
-        Connection conn = ds.getConnection();
+    public Alive getAlive(int id) throws BiologySystemException {
+        Connection conn = null;
         PreparedStatement pst = null;
         Alive alive = null;
         ResultSet rs = null;
         try {
+            conn = ds.getConnection();
             pst = conn.prepareStatement(SQL_GET_ALIVE);
             pst.setInt(1, id);
             rs = pst.executeQuery();
             alive = handleAliveResultSet(rs).get(0);
+        } catch (SQLException e) {
+            throw new BiologySystemException(e);
         } finally {
             closeAll(conn, pst, rs);
         }
@@ -112,10 +118,11 @@ public class DBBiosystem implements BiosystemDAO {
      * @see biosys.model.BiosystemDAO#addAlive(biosys.model.Alive)
      */
     @Override
-    public void addAlive(Alive alive) throws SQLException {
-        Connection conn = ds.getConnection();
+    public void addAlive(Alive alive) throws BiologySystemException {
+        Connection conn = null;
         PreparedStatement pst = null;
         try {
+            conn = ds.getConnection();
             pst = conn.prepareStatement(SQL_ADD_ALIVE);
             pst.setString(1, alive.getName());
             pst.setString(2, alive.getNameLatin());
@@ -126,6 +133,8 @@ public class DBBiosystem implements BiosystemDAO {
             pst.setInt(7, alive.getBioClass());
 
             log.info("Add Alive: " + pst.executeUpdate());
+        } catch (SQLException e) {
+            throw new BiologySystemException(e);
         } finally {
             closeAll(conn, pst, null);
         }
@@ -135,10 +144,11 @@ public class DBBiosystem implements BiosystemDAO {
      * @see biosys.model.BiosystemDAO#updateAlive(biosys.model.Alive)
      */
     @Override
-    public void updateAlive(Alive alive) throws SQLException {
-        Connection conn = ds.getConnection();
+    public void updateAlive(Alive alive) throws BiologySystemException {
+        Connection conn = null;
         PreparedStatement pst = null;
         try {
+            conn = ds.getConnection();
             pst = conn.prepareStatement(SQL_UPDATE_ALIVE);
             pst.setString(1, alive.getName());
             pst.setString(2, alive.getNameLatin());
@@ -150,6 +160,8 @@ public class DBBiosystem implements BiosystemDAO {
             pst.setInt(8, alive.getId());
 
             log.info("Update Alive: " + pst.executeUpdate());
+        } catch (SQLException e) {
+            throw new BiologySystemException(e);
         } finally {
             closeAll(conn, pst, null);
         }
@@ -159,13 +171,16 @@ public class DBBiosystem implements BiosystemDAO {
      * @see biosys.model.BiosystemDAO#removeAlive(int)
      */
     @Override
-    public void removeAlive(int id) throws SQLException {
-        Connection conn = ds.getConnection();
+    public void removeAlive(int id) throws BiologySystemException {
+        Connection conn = null;
         PreparedStatement pst = null;
         try {
+            conn = ds.getConnection();
             pst = conn.prepareStatement(SQL_DELETE_ALIVE);
             pst.setInt(1, id);
             pst.executeUpdate();
+        } catch (SQLException e) {
+            throw new BiologySystemException(e);
         } finally {
             closeAll(conn, pst, null);
         }
@@ -174,17 +189,24 @@ public class DBBiosystem implements BiosystemDAO {
     /* (non-Javadoc)
      * @see biosys.model.BiosystemDAO#getAllAliveConstraint(java.lang.String, java.util.List)
      */
-    public List<Alive> getAllAliveConstraint(String ordercol, List<String> constraints) throws SQLException {
-        Connection conn = ds.getConnection();
+    public List<Alive> getAllAliveConstraint(String ordercol, List<String> constraints)
+             throws BiologySystemException
+    {
+        Connection conn = null;
         PreparedStatement pst = null;
         List<Alive> list = null;
         ResultSet rs = null;
         String temp;
         try {
-            pst = conn.prepareStatement(temp = SQL_GET_ALL_ALIVE + makeConstraint(ordercol, constraints));
+            conn = ds.getConnection();
+            pst = conn.prepareStatement(temp = SQL_GET_ALL_ALIVE
+                    + makeConstraint(ordercol, constraints));
             log.info("getAllAlive statement: " + temp);
             rs = pst.executeQuery();
             list = handleAliveResultSet(rs);
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         } finally {
             closeAll(conn, pst, rs);
         }
@@ -195,15 +217,19 @@ public class DBBiosystem implements BiosystemDAO {
      * @see biosys.model.BiosystemDAO#getAllClasses()
      */
     @Override
-    public List<BioClass> getAllClasses() throws SQLException {
-        Connection conn = ds.getConnection();
+    public List<BioClass> getAllClasses() throws BiologySystemException {
+        Connection conn = null;
         Statement st = null;
         List<BioClass> list = null;
         ResultSet rs = null;
         try {
+            conn = ds.getConnection();
             st = conn.createStatement();
             rs = st.executeQuery(SQL_GET_ALL_CLASSES);
             list = handleClassesResultSet(rs);
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         } finally {
             closeAll(conn, st, rs);
         }
@@ -214,16 +240,20 @@ public class DBBiosystem implements BiosystemDAO {
      * @see biosys.model.BiosystemDAO#getBioClass(int)
      */
     @Override
-    public BioClass getBioClass(int id) throws SQLException {
-        Connection conn = ds.getConnection();
+    public BioClass getBioClass(int id) throws BiologySystemException {
+        Connection conn = null;
         PreparedStatement pst = null;
         BioClass bioClass = null;
         ResultSet rs = null;
         try {
+            conn = ds.getConnection();
             pst = conn.prepareStatement(SQL_GET_CLASS);
             pst.setInt(1, id);
             rs = pst.executeQuery();
             bioClass = handleClassesResultSet(rs).get(0);
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         } finally {
             closeAll(conn, pst, rs);
         }
@@ -234,12 +264,13 @@ public class DBBiosystem implements BiosystemDAO {
      * @see biosys.model.BiosystemDAO#addBioClass(biosys.model.BioClass)
      */
     @Override
-    public void addBioClass(BioClass bio) throws SQLException {
-        Connection conn = ds.getConnection();
+    public void addBioClass(BioClass bio) throws BiologySystemException {
+        Connection conn = null;
         PreparedStatement pst = null;
         PreparedStatement pstCheck = null;
         ResultSet rsCheck = null;
         try {
+            conn = ds.getConnection();
             pst = conn.prepareStatement(SQL_ADD_CLASS);
             pst.setString(1, bio.getName());
             if (bio.getParentId() == null) {
@@ -253,6 +284,9 @@ public class DBBiosystem implements BiosystemDAO {
                 pst.setInt(2, bio.getParentId());
             }
             pst.executeUpdate();
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         } finally {
             closeAll(conn, pst, null);
         }
@@ -262,10 +296,11 @@ public class DBBiosystem implements BiosystemDAO {
      * @see biosys.model.BiosystemDAO#updateBioClass(biosys.model.BioClass)
      */
     @Override
-    public void updateBioClass(BioClass bio) throws SQLException {
-        Connection conn = ds.getConnection();
+    public void updateBioClass(BioClass bio) throws BiologySystemException {
+        Connection conn = null;
         PreparedStatement pst = null;
         try {
+            conn = ds.getConnection();
             pst = conn.prepareStatement(SQL_UPDATE_CLASS);
             pst.setString(1, bio.getName());
             if (bio.getParentId() == null)
@@ -274,6 +309,9 @@ public class DBBiosystem implements BiosystemDAO {
                 pst.setNull(2, bio.getParentId());
             pst.setInt(3, bio.getId());
             pst.executeUpdate();
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         } finally {
             closeAll(conn, pst, null);
         }
@@ -283,12 +321,13 @@ public class DBBiosystem implements BiosystemDAO {
      * @see biosys.model.BiosystemDAO#removeBioClass(int)
      */
     @Override
-    public void removeBioClass(int id) throws SQLException {
-        Connection conn = ds.getConnection();
+    public void removeBioClass(int id) throws BiologySystemException {
+        Connection conn = null;
         PreparedStatement pst = null;
         PreparedStatement checkSt = null;
         ResultSet checkRs = null;
         try {
+            conn = ds.getConnection();
             checkSt = conn.prepareStatement(SQL_CHECK_CLASS_CHILDREN);
             checkSt.setInt(1, id);
             checkRs = checkSt.executeQuery();
@@ -297,12 +336,18 @@ public class DBBiosystem implements BiosystemDAO {
             pst = conn.prepareStatement(SQL_DELETE_CLASS);
             pst.setInt(1, id);
             pst.executeUpdate();
+        } catch (SQLException e) {
+            throw new BiologySystemException(e);
         } finally {
             try {
                 closeAll(conn, pst, checkRs);
             } finally {
                 if (checkSt != null)
-                    checkSt.close();
+                    try {
+                        checkSt.close();
+                    } catch (SQLException e) {
+                        throw new BiologySystemException(e);
+                    }
             }
         }
     }
@@ -312,19 +357,23 @@ public class DBBiosystem implements BiosystemDAO {
      */
     @Override
     public List<BioClass> getAllClassesConstraint(String ordercol, List<String> constraints)
-            throws SQLException {
+             throws BiologySystemException
+    {
 
-        Connection conn = ds.getConnection();
+        Connection conn = null;
         PreparedStatement pst = null;
         List<BioClass> list = null;
         ResultSet rs = null;
         String temp;
         try {
+            conn = ds.getConnection();
             pst = conn.prepareStatement(temp = SQL_GET_ALL_CLASSES +
                     makeConstraint(ordercol, constraints));
             log.info("getAllClasses statement: " + temp);
             rs = pst.executeQuery();
             list = handleClassesResultSet(rs);
+        } catch (SQLException e) {
+            throw new BiologySystemException(e);
         } finally {
             closeAll(conn, pst, rs);
         }
@@ -335,16 +384,19 @@ public class DBBiosystem implements BiosystemDAO {
      * @see biosys.model.BiosystemDAO#getClassesHierarchy(int)
      */
     @Override
-    public List<BioClass> getClassesHierarchy(int id) throws SQLException {
-        Connection conn = ds.getConnection();
+    public List<BioClass> getClassesHierarchy(int id) throws BiologySystemException {
+        Connection conn = null;
         PreparedStatement pst = null;
         List<BioClass> list = null;
         ResultSet rs = null;
         try {
+            conn = ds.getConnection();
             pst = conn.prepareStatement(SQL_CLASSES_HIERARCHY_BY_ID);
             pst.setInt(1, id);
             rs = pst.executeQuery();
             list = handleClassesResultSet(rs);
+        } catch (SQLException e) {
+            throw new BiologySystemException(e);
         } finally {
             closeAll(conn, pst, rs);
         }
@@ -355,15 +407,19 @@ public class DBBiosystem implements BiosystemDAO {
      * @see biosys.model.BiosystemDAO#getAllClassesHierarchy()
      */
     @Override
-    public List<BioClass> getAllClassesHierarchy() throws SQLException {
-        Connection conn = ds.getConnection();
+    public List<BioClass> getAllClassesHierarchy() throws BiologySystemException {
+        Connection conn = null;
         Statement st = null;
         List<BioClass> list = null;
         ResultSet rs = null;
         try {
+            conn = ds.getConnection();
+
             st = conn.createStatement();
             rs = st.executeQuery(SQL_CLASSES_HIERARCHY);
             list = handleClassesResultSet(rs);
+        } catch (SQLException e) {
+            throw new BiologySystemException(e);
         } finally {
             closeAll(conn, st, rs);
         }
@@ -482,18 +538,22 @@ public class DBBiosystem implements BiosystemDAO {
      * @param rs <tt>ResultSet</tt> to close
      * @throws SQLException
      */
-    private void closeAll(Connection conn, Statement st, ResultSet rs) throws SQLException {
+    private void closeAll(Connection conn, Statement st, ResultSet rs) throws BiologySystemException {
         try {
-            if (conn != null)
-                conn.close();
-        } finally {
             try {
-                if (st != null)
-                    st.close();
+                if (conn != null)
+                    conn.close();
             } finally {
-                if (rs != null)
-                    rs.close();
+                try {
+                    if (st != null)
+                        st.close();
+                } finally {
+                    if (rs != null)
+                        rs.close();
+                }
             }
+        } catch (SQLException e) {
+            throw new BiologySystemException(e);
         }
 
     }

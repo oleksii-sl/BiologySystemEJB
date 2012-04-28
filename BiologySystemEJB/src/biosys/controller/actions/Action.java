@@ -7,6 +7,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import biosys.model.BiologySystemException;
+
 /**
  * Common interface for all actions that user can perform
  * @author Алексей
@@ -27,5 +29,5 @@ public interface Action {
      * @throws ServletException
      */
     public void perform(HttpServletRequest request, HttpServletResponse response)
-            throws SQLException, IOException, ServletException;
+            throws BiologySystemException, IOException, ServletException;
 }

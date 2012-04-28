@@ -15,7 +15,8 @@ import javax.naming.NamingException;
 import model.AliveHome;
 import model.BioClassHome;
 
-public class EJBBiosystem implements BiosystemDAO {
+public class EJBBiosystem implements BiosystemDAO
+{
 
     private static final String ALIVE_CONTEXT_NAME = "Alive";
     private static final String CLASS_CONTEXT_NAME = "BioClass";
@@ -36,7 +37,7 @@ public class EJBBiosystem implements BiosystemDAO {
     }
 
     @Override
-    public List<Alive> getAllAlive()
+    public List<Alive> getAllAlive() throws BiologySystemException
     {
         Collection<model.Alive> remoteList = null;
         List<Alive> list = null;
@@ -57,15 +58,15 @@ public class EJBBiosystem implements BiosystemDAO {
                 list.add(alive);
             }
         } catch (RemoteException e) {
-            throw new RuntimeException(e);
+            throw new BiologySystemException(e);
         } catch (FinderException e) {
-            throw new RuntimeException(e);
+            throw new BiologySystemException(e);
         }
         return list;
     }
 
     @Override
-    public Alive getAlive(int id)
+    public Alive getAlive(int id) throws BiologySystemException
     {
         Alive alive = new Alive();
         try {
@@ -79,30 +80,30 @@ public class EJBBiosystem implements BiosystemDAO {
             alive.setNativeRange(temp.getNativeRange());
             alive.setPopulation(temp.getPopulation());
         } catch (RemoteException e) {
-            throw new RuntimeException(e);
+            throw new BiologySystemException(e);
         } catch (FinderException e) {
-            throw new RuntimeException(e);
+            throw new BiologySystemException(e);
         }
         return alive;
     }
 
     @Override
-    public void addAlive(Alive alive)
+    public void addAlive(Alive alive) throws BiologySystemException
     {
         try {
             aliveHome.create(alive.getName(), alive.getNameLatin(), alive.getLifespan(),
                     alive.getAvgWeight(), alive.getNativeRange(), alive.getPopulation(),
                     alive.getBioClass());
         } catch (RemoteException e) {
-            throw new RuntimeException(e);
+            throw new BiologySystemException(e);
         } catch (CreateException e) {
-            throw new RuntimeException(e);
+            throw new BiologySystemException(e);
         }
 
     }
 
     @Override
-    public void updateAlive(Alive alive)
+    public void updateAlive(Alive alive) throws BiologySystemException
     {
         try {
             model.Alive oldAlive = aliveHome.findByPrimaryKey(alive.getId());
@@ -114,27 +115,28 @@ public class EJBBiosystem implements BiosystemDAO {
             oldAlive.setNativeRange(alive.getNativeRange());
             oldAlive.setPopulation(alive.getPopulation());
         } catch (RemoteException e) {
-            throw new RuntimeException(e);
+            throw new BiologySystemException(e);
         } catch (FinderException e) {
-            throw new RuntimeException(e);
+            throw new BiologySystemException(e);
         }
     }
 
     @Override
-    public void removeAlive(int id)
+    public void removeAlive(int id) throws BiologySystemException
     {
         try {
             aliveHome.remove(id);
         } catch (RemoteException e) {
-            throw new RuntimeException(e);
+            throw new BiologySystemException(e);
         } catch (RemoveException e) {
-            throw new RuntimeException(e);
+            throw new BiologySystemException(e);
         }
 
     }
 
     @Override
     public List<Alive> getAllAliveConstraint(String ordercol, List<String> constraints)
+            throws BiologySystemException
     {
 
         List<Alive> list = null;
@@ -155,15 +157,15 @@ public class EJBBiosystem implements BiosystemDAO {
                 list.add(alive);
             }
         } catch (RemoteException e) {
-            throw new RuntimeException(e);
+            throw new BiologySystemException(e);
         } catch (FinderException e) {
-            throw new RuntimeException(e);
+            throw new BiologySystemException(e);
         }
         return list;
     }
 
     @Override
-    public List<BioClass> getAllClasses()
+    public List<BioClass> getAllClasses() throws BiologySystemException
     {
         List<BioClass> list = null;
         try {
@@ -178,15 +180,15 @@ public class EJBBiosystem implements BiosystemDAO {
                 list.add(bioClass);
             }
         } catch (RemoteException e) {
-            throw new RuntimeException(e);
+            throw new BiologySystemException(e);
         } catch (FinderException e) {
-            throw new RuntimeException(e);
+            throw new BiologySystemException(e);
         }
         return list;
     }
 
     @Override
-    public BioClass getBioClass(int id)
+    public BioClass getBioClass(int id) throws BiologySystemException
     {
         BioClass bioClass = new BioClass();
         try {
@@ -195,56 +197,57 @@ public class EJBBiosystem implements BiosystemDAO {
             bioClass.setName(remote.getName());
             bioClass.setParentId(remote.getParentId());
         } catch (RemoteException e) {
-            throw new RuntimeException(e);
+            throw new BiologySystemException(e);
         } catch (FinderException e) {
-            throw new RuntimeException(e);
+            throw new BiologySystemException(e);
         }
         return bioClass;
     }
 
     @Override
-    public void addBioClass(BioClass bio)
+    public void addBioClass(BioClass bio) throws BiologySystemException
     {
         try {
             bioClassHome.create(bio.getName(), bio.getParentId());
         } catch (RemoteException e) {
-            throw new RuntimeException(e);
+            throw new BiologySystemException(e);
         } catch (CreateException e) {
-            throw new RuntimeException(e);
+            throw new BiologySystemException(e);
         }
 
     }
 
     @Override
-    public void updateBioClass(BioClass bio)
+    public void updateBioClass(BioClass bio) throws BiologySystemException
     {
         try {
             model.BioClass oldClass = bioClassHome.findByPrimaryKey(bio.getId());
             oldClass.setName(bio.getName());
             oldClass.setParentId(bio.getParentId());
         } catch (RemoteException e) {
-            throw new RuntimeException(e);
+            throw new BiologySystemException(e);
         } catch (FinderException e) {
-            throw new RuntimeException(e);
+            throw new BiologySystemException(e);
         }
 
     }
 
     @Override
-    public void removeBioClass(int id)
+    public void removeBioClass(int id) throws BiologySystemException
     {
         try {
             bioClassHome.remove(id);
         } catch (RemoteException e) {
-            throw new RuntimeException(e);
+            throw new BiologySystemException(e);
         } catch (RemoveException e) {
-            throw new RuntimeException(e);
+            throw new BiologySystemException(e);
         }
 
     }
 
     @Override
     public List<BioClass> getAllClassesConstraint(String ordercol, List<String> constraints)
+            throws BiologySystemException
     {
         List<BioClass> list = null;
         try {
@@ -260,15 +263,15 @@ public class EJBBiosystem implements BiosystemDAO {
                 list.add(bioClass);
             }
         } catch (RemoteException e) {
-            throw new RuntimeException(e);
+            throw new BiologySystemException(e);
         } catch (FinderException e) {
-            throw new RuntimeException(e);
+            throw new BiologySystemException(e);
         }
         return list;
     }
 
     @Override
-    public List<BioClass> getClassesHierarchy(int id)
+    public List<BioClass> getClassesHierarchy(int id) throws BiologySystemException
     {
         List<BioClass> list = null;
         try {
@@ -283,15 +286,15 @@ public class EJBBiosystem implements BiosystemDAO {
                 list.add(bioClass);
             }
         } catch (RemoteException e) {
-            throw new RuntimeException(e);
+            throw new BiologySystemException(e);
         } catch (FinderException e) {
-            throw new RuntimeException(e);
+            throw new BiologySystemException(e);
         }
         return list;
     }
 
     @Override
-    public List<BioClass> getAllClassesHierarchy()
+    public List<BioClass> getAllClassesHierarchy() throws BiologySystemException
     {
         List<BioClass> list = null;
         try {
@@ -306,9 +309,9 @@ public class EJBBiosystem implements BiosystemDAO {
                 list.add(bioClass);
             }
         } catch (RemoteException e) {
-            throw new RuntimeException(e);
+            throw new BiologySystemException(e);
         } catch (FinderException e) {
-            throw new RuntimeException(e);
+            throw new BiologySystemException(e);
         }
         return list;
     }
