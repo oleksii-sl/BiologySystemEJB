@@ -41,6 +41,8 @@ public class AliveBean extends CommonBean implements EntityBean
     private static final String SQL_ADD_ALIVE = "INSERT INTO living_entity " +
             "VALUES(seq_living_entity.nextval, ?, ?, ?, ?, ?, ?, ?)";
 
+    private static final String SQL_ALIVE_CURR_ID = "SELECT seq_living_entity.currval FROM dual";
+
 
     private EntityContext context;
     private DataSource ds;
@@ -71,6 +73,9 @@ public class AliveBean extends CommonBean implements EntityBean
     {
         Connection conn = null;
         PreparedStatement pst = null;
+        Statement st = null;
+        ResultSet rs = null;
+        Integer primaryKey = null;
         try {
             conn = ds.getConnection();
             pst = conn.prepareStatement(SQL_ADD_ALIVE);
@@ -83,18 +88,24 @@ public class AliveBean extends CommonBean implements EntityBean
             pst.setInt(7, bioClass);
             //pst.executeUpdate();
             log.info("Add Alive: " + pst.executeUpdate());
+            st = conn.createStatement();
+            rs = st.executeQuery(SQL_ALIVE_CURR_ID);
+            rs.next();
+            primaryKey = rs.getInt(1);
+            log.info("Alive primary key: " + primaryKey);
             setStateChanged(false);
         } catch (SQLException e) {
             throw new CreateException(e.getMessage());
         } finally {
             try {
                 closeAll(conn, pst, null);
+                closeAll(null, st, rs);
             } catch (SQLException e) {
                 throw new EJBException(e.getMessage());
             }
         }
 
-        return null;
+        return primaryKey;
     }
 
     public void ejbPostCreate(String name, String nameLatin, int lifespan,

@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -54,6 +55,8 @@ public class BioClassBean extends CommonBean implements EntityBean
 
     private static final String SQL_CHECK_CLASS_EXIST = "SELECT * FROM classification WHERE id = ?";
 
+    private static final String SQL_CLASS_CURR_ID = "SELECT seq_classification.currval FROM dual";
+
     private static final String EXCEPTION_PARENT_CLASS_DELETE = "You are trying to delete a class " +
                                                     "that is referenced in the living entity table";
 
@@ -81,6 +84,9 @@ public class BioClassBean extends CommonBean implements EntityBean
         PreparedStatement pst = null;
         PreparedStatement pstCheck = null;
         ResultSet rsCheck = null;
+        Statement st = null;
+        ResultSet rs = null;
+        Integer primaryKey = null;
 
         try {
             conn = ds.getConnection();
@@ -98,18 +104,24 @@ public class BioClassBean extends CommonBean implements EntityBean
             }
             //pst.executeUpdate();
             log.info("Add Alive: " + pst.executeUpdate());
+            st = conn.createStatement();
+            rs = st.executeQuery(SQL_CLASS_CURR_ID);
+            rs.next();
+            primaryKey = rs.getInt(1);
             setStateChanged(false);
         } catch (SQLException e) {
             throw new CreateException(e.getMessage());
         } finally {
             try {
                 closeAll(conn, pst, null);
+                closeAll(null, pstCheck, rsCheck);
+                closeAll(null, st, rs);
             } catch (SQLException e) {
                 throw new EJBException(e.getMessage());
             }
         }
 
-        return null;
+        return primaryKey;
     }
 
     public void ejbPostCreate(String name, Integer parent) throws CreateException { }
